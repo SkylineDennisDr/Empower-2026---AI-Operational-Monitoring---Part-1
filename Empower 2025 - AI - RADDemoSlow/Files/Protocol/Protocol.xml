@@ -10,7 +10,7 @@
 	
 -->
 <Protocol xmlns="http://www.skyline.be/protocol">
-	<Name>AI - Commtia DAB</Name>
+	<Name>Empower 2025 - AI - Commtia DAB</Name>
 	<Description>Commtia DAB Unit - Slow Version</Description>
 	<Provider>Skyline Communications</Provider>
 	<Version>1.0.0.1</Version>
@@ -3778,7 +3778,7 @@ public class QAction
 	<Timers>
 		<Timer id="1">
 			<Name>Timer1</Name>
-			<Time initial="random=5:10">30000</Time> <!-- 30000 to have slow reading-->
+			<Time initial="random=5:10">30000</Time>
 			<!-- 30 sec-->
 			<Content>
 				<Group>1</Group>
