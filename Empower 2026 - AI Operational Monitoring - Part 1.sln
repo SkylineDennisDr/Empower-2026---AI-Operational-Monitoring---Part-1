@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empower 2026 - AI Operation
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI - Commtia DAB", "AI - Commtia DAB\AI - Commtia DAB.csproj", "{047416B4-9B17-ACA1-F102-5E8D9DFD21EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Single Groups", "..\Empower-2026---Practical-AI\Add Single Groups\Add Single Groups.csproj", "{9CAE11C0-DB1F-F0E9-9C04-8C6CE4026898}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Single Groups", "Add Single Groups\Add Single Groups.csproj", "{9CAE11C0-DB1F-F0E9-9C04-8C6CE4026898}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Shared Model Group", "..\Empower-2026---Practical-AI\Add Shared Model Group\Add Shared Model Group.csproj", "{A5FC4858-65B4-5337-7BAE-0C08170BC751}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Add Shared Model Group", "Add Shared Model Group\Add Shared Model Group.csproj", "{A5FC4858-65B4-5337-7BAE-0C08170BC751}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Empower 2026 - AI - Audio bit rate CBR-VBR", "Empower 2025 - AI - Audio bit rate CBR-VBR\Empower 2026 - AI - Audio bit rate CBR-VBR.csproj", "{6DFA0E3D-75A5-90F1-0751-8757763AF766}"
 EndProject
