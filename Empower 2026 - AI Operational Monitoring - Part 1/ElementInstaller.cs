@@ -30,7 +30,7 @@
             viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Pattern Matching Demo" });
             CreateElement("Empower 2026 - AI - Video server 1", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
             CreateElement("Empower 2026 - AI - Video server 2", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
-            CreateElement("Empower 2026 - AI - PM in tables ", "Empower 2026 - AI - PM in Tables", "1.0.0.3", viewID);
+            CreateElement("Empower 2026 - AI - PM in tables", "Empower 2026 - AI - PM in Tables", "1.0.0.3", viewID);
 
             viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Proactive Detection Demo" });
             CreateElement("Empower 2026 - AI - SFP Monitor", "Empower 2026 - AI - SFP", "0.0.0.1", viewID);
@@ -53,6 +53,10 @@
             element = engine.FindElement("Empower 2026 - AI - Video server 2");
             if (element != null)
                 element.SetParameter(102, 1);
+            element = engine.FindElement("Empower 2026 - AI - PM in tables");
+            if (element != null)
+                element.SetParameter(506, 1);
+
 
             viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Relational Anomaly Detection Demo" });
             CreateElement($"RAD - Commtia LON 1", "AI - Commtia DAB", "1.0.0.1", viewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
