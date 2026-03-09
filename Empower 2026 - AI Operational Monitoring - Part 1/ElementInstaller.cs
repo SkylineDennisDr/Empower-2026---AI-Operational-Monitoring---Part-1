@@ -1,194 +1,223 @@
 ﻿namespace Elements
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using Skyline.DataMiner.Analytics.DataTypes;
-    using Skyline.DataMiner.Automation;
-    using Skyline.DataMiner.Core.DataMinerSystem.Automation;
-    using Skyline.DataMiner.Core.DataMinerSystem.Common;
-    using Skyline.DataMiner.Net;
-    using Skyline.DataMiner.Net.Messages;
-    using Skyline.DataMiner.Net.Messages.Advanced;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Runtime.CompilerServices;
+	using System.Threading;
+	using System.Threading.Tasks;
+	using Skyline.DataMiner.Analytics.DataTypes;
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net;
+	using Skyline.DataMiner.Net.Messages;
+	using Skyline.DataMiner.Net.Messages.Advanced;
+	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 
-    internal class ElementInstaller
-    {
-        private readonly IEngine engine;
+	internal class ElementInstaller
+	{
+		private readonly IEngine engine;
 
-        public ElementInstaller(IEngine engine)
-        {
-            this.engine = engine;
-        }
+		public ElementInstaller(IEngine engine)
+		{
+			this.engine = engine;
+		}
 
-        public void InstallDefaultContent()
-        {
-            int viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Behavioral Anomaly Detection Demo" });
-            CreateElement("Empower 2026 - AI - Audio bit rate", "Empower 2026 - AI - Audio bit rate CBR-VBR", "0.0.0.1", viewID);
-            CreateElement("Empower 2026 - AI - Task Manager", "Empower 2026 - AI - Task Manager", "0.0.0.1", viewID);
+		public void InstallDefaultContent()
+		{
+			#region element creation
+			int viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Behavioral Anomaly Detection Demo" });
+			CreateElement("Empower 2026 - AI - Audio bit rate", "Empower 2026 - AI - Audio bit rate CBR-VBR", "0.0.0.1", viewID);
+			CreateElement("Empower 2026 - AI - Task Manager", "Empower 2026 - AI - TSR", "1.0.0.4", viewID);
 
-            viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Pattern Matching Demo" });
-            CreateElement("Empower 2026 - AI - Video server 1", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
-            CreateElement("Empower 2026 - AI - Video server 2", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
-            CreateElement("Empower 2026 - AI - PM in tables", "Empower 2026 - AI - PM in Tables", "1.0.0.3", viewID);
+			viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Pattern Matching Demo" });
+			CreateElement("Empower 2026 - AI - Video server 1", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
+			CreateElement("Empower 2026 - AI - Video server 2", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
+			CreateElement("Empower 2026 - AI - PM in tables", "Empower 2026 - AI - PM in Tables", "1.0.0.3", viewID);
+			CreateElement("Empower 2026 - AI - Pattern Event Creator", "Empower 2026 - AI - Pattern Event Creator", "0.0.0.1", viewID);
 
-            viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Proactive Detection Demo" });
-            CreateElement("Empower 2026 - AI - SFP Monitor", "Empower 2026 - AI - SFP", "0.0.0.1", viewID);
-            CreateElement("Empower 2026 - AI - AMS Server", "Empower 2026 - AI - AMS Server", "0.0.0.3", viewID);
-            
-            int CMSViewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026","AI Operational Monitoring", "Proactive Detection Demo",
-                "Content Management Servers" });
-            CreateElement("Empower 2026 - AI - CMS 1", "Empower 2026 - AI - Content Management Server 1", "0.0.0.1", CMSViewID);
-            CreateElement("Empower 2026 - AI - CMS 2", "Empower 2026 - AI - Content Management Server 2", "0.0.0.1", CMSViewID);
-            CreateElement("Empower 2026 - AI - CMS 3", "Empower 2026 - AI - Content Management Server 3", "0.0.0.1", CMSViewID);
-            AssignVisioToView(CMSViewID, "Empower 2025 - AI - Content Management Server.vsdx");
-
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
-            var element = engine.FindElement("Empower 2026 - AI - Audio bit rate");
-            if (element != null)
-                element.SetParameter(102, 1);
-            element = engine.FindElement("Empower 2026 - AI - Video server 1");
-            if (element != null)
-                element.SetParameter(102, 1);
-            element = engine.FindElement("Empower 2026 - AI - Video server 2");
-            if (element != null)
-                element.SetParameter(102, 1);
-            element = engine.FindElement("Empower 2026 - AI - PM in tables");
-            if (element != null)
-                element.SetParameter(506, 1);
+			viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Relational Anomaly Detection Demo" });
+			string lastElementName = "Empower 2026 - AI - DAB Transmitter";
+			CreateElement(lastElementName, "Empower 2026 - AI - Commtia DAB", "1.0.0.1", viewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
+			Thread.Sleep(5000);
 
 
-            viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Relational Anomaly Detection Demo" });
-            CreateElement($"RAD - Commtia LON 1", "AI - Commtia DAB", "1.0.0.1", viewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-            Thread.Sleep(5000);
-            CreateElement($"RAD - Commtia LON 2", "AI - Commtia DAB", "1.0.0.1", viewID, "TrendTemplate_PA_Demo", "AlarmTemplate_PA_Demo");
-            Thread.Sleep(5000);            
-        }
+			/*viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Proactive Detection Demo" });
+			CreateElement("Empower 2026 - AI - SFP Monitor", "Empower 2026 - AI - SFP", "0.0.0.1", viewID);
+			CreateElement("Empower 2026 - AI - AMS Server", "Empower 2026 - AI - AMS Server", "0.0.0.3", viewID);*/
 
-        private void AssignVisioToView(int viewID, string visioFileName)
-        {
-            var request = new AssignVisualToViewRequestMessage(viewID, new Skyline.DataMiner.Net.VisualID(visioFileName));
+			/*int CMSViewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026","AI Operational Monitoring", "Proactive Detection Demo",
+				"Content Management Servers" });
+			CreateElement("Empower 2026 - AI - CMS 1", "Empower 2026 - AI - Content Management Server 1", "0.0.0.1", CMSViewID);
+			CreateElement("Empower 2026 - AI - CMS 2", "Empower 2026 - AI - Content Management Server 2", "0.0.0.1", CMSViewID);
+			CreateElement("Empower 2026 - AI - CMS 3", "Empower 2026 - AI - Content Management Server 3", "0.0.0.1", CMSViewID);
+			//AssignVisioToView(CMSViewID, "Empower 2025 - AI - Content Management Server.vsdx");*/
+			#endregion
 
-            engine.SendSLNetMessage(request);
-        }
+			#region Element data loading
+			while (!engine.GetDms().ElementExists(lastElementName))
+			{
+				engine.GenerateInformation("Waiting for elements to be created...");
+				Thread.Sleep(5000);
+			}
 
-        private int? GetView(string viewName)
-        {
-            var views = engine.SendSLNetMessage(new GetInfoMessage(InfoType.ViewInfo));
-            foreach (var m in views)
-            {
-                var viewInfo = m as ViewInfoEventMessage;
-                if (viewInfo == null)
-                    continue;
+			engine.GenerateInformation("Fetching elements");
+			var videoServer1 = engine.FindElement("Empower 2026 - AI - Video server 1");
+			var videoServer2 = engine.FindElement("Empower 2026 - AI - Video server 2");
+			var pmInTables = engine.FindElement("Empower 2026 - AI - PM in tables");
+			var audioBitRateElement = engine.FindElement("Empower 2026 - AI - Audio bit rate");
+			var TSRElement= engine.FindElement("Empower 2026 - AI - Task Manager");
 
-                if (viewInfo.Name == viewName)
-                    return viewInfo.ID;
-            }
+			if (videoServer1 != null && videoServer2 != null && pmInTables != null && audioBitRateElement != null && TSRElement != null)
+			{
+				engine.GenerateInformation("Specifying number of history points to read");
+				videoServer1.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1
+				videoServer2.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1
+				pmInTables.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1
+				audioBitRateElement.SetParameter(14, 10000); //For empower, set to 4: every 5', 4 points will be read. This leads to 1364 points to be read, which is good.
+				TSRElement.SetParameter(10, 10000); //!!!!!!!!!!!!!!!!!!!!FOR EMPOWER, SET THIS TO 15!!!!!!!!!!!!!!!!!!!
+				Thread.Sleep(5000);
+				engine.GenerateInformation("Enabling history data read-in");
+				videoServer1.SetParameter(102, 1);
+				videoServer2.SetParameter(102, 1);
+				pmInTables.SetParameter(506, 1);
+				audioBitRateElement.SetParameter(506, 1);
+				TSRElement.SetParameter(506, 1);
+			}
+			engine.GenerateInformation("Finished installing elements");
+			#endregion
 
-            return null;
-        }
+		}
 
-        private int CreateNewView(string viewName, string parentViewName)
-        {
-            var request = new SetDataMinerInfoMessage
-            {
-                bInfo1 = int.MaxValue,
-                bInfo2 = int.MaxValue,
-                DataMinerID = -1,
-                HostingDataMinerID = -1,
-                IInfo1 = int.MaxValue,
-                IInfo2 = int.MaxValue,
-                Sa1 = new SA(new string[] { viewName, parentViewName }),
-                What = (int)NotifyType.NT_ADD_VIEW_PARENT_AS_NAME,
-            };
+		private void AssignVisioToView(int viewID, string visioFileName)
+		{
+			var request = new AssignVisualToViewRequestMessage(viewID, new Skyline.DataMiner.Net.VisualID(visioFileName));
 
-            var response = engine.SendSLNetSingleResponseMessage(request);
-            if (!(response is SetDataMinerInfoResponseMessage infoResponse))
-                throw new ArgumentException("Unexpected message returned by DataMiner");
+			engine.SendSLNetMessage(request);
+		}
 
-            return infoResponse.iRet;
-        }
+		private int? GetView(string viewName)
+		{
+			var views = engine.SendSLNetMessage(new GetInfoMessage(InfoType.ViewInfo));
+			foreach (var m in views)
+			{
+				var viewInfo = m as ViewInfoEventMessage;
+				if (viewInfo == null)
+					continue;
 
-        private int CreateViews(string[] viewNames)
-        {
-            int? firstNonExistingViewLevel = null;
-            int? lastExistingViewID = null;
-            string lastExistingViewName = null;
+				if (viewInfo.Name == viewName)
+					return viewInfo.ID;
+			}
 
-            for (int i = viewNames.Length - 1; i >= 0; --i)
-            {
-                int? viewID = GetView(viewNames[i]);
-                if (viewID.HasValue)
-                {
-                    lastExistingViewID = viewID;
-                    lastExistingViewName = viewNames[i];
-                    firstNonExistingViewLevel = i + 1;
-                    break;
-                }
-            }
+			return null;
+		}
 
-            if (firstNonExistingViewLevel.HasValue && firstNonExistingViewLevel == viewNames.Length)
-                return lastExistingViewID.Value;
+		private int CreateNewView(string viewName, string parentViewName)
+		{
+			var request = new SetDataMinerInfoMessage
+			{
+				bInfo1 = int.MaxValue,
+				bInfo2 = int.MaxValue,
+				DataMinerID = -1,
+				HostingDataMinerID = -1,
+				IInfo1 = int.MaxValue,
+				IInfo2 = int.MaxValue,
+				Sa1 = new SA(new string[] { viewName, parentViewName }),
+				What = (int)NotifyType.NT_ADD_VIEW_PARENT_AS_NAME,
+			};
 
-            if (!firstNonExistingViewLevel.HasValue)
-            {
-                // No views in the tree already exist, so create all views starting from the root view
-                lastExistingViewID = -1;
-                lastExistingViewName = engine.GetDms().GetView(-1).Name;
-                firstNonExistingViewLevel = 0;
-            }
+			var response = engine.SendSLNetSingleResponseMessage(request);
+			if (!(response is SetDataMinerInfoResponseMessage infoResponse))
+				throw new ArgumentException("Unexpected message returned by DataMiner");
 
-            for (int i = firstNonExistingViewLevel.Value; i < viewNames.Length; ++i)
-            {
-                lastExistingViewID = CreateNewView(viewNames[i], lastExistingViewName);
-                lastExistingViewName = viewNames[i];
-            }
+			return infoResponse.iRet;
+		}
 
-            return lastExistingViewID.Value;
-        }
+		private int CreateViews(string[] viewNames)
+		{
+			int? firstNonExistingViewLevel = null;
+			int? lastExistingViewID = null;
+			string lastExistingViewName = null;
 
-        private void CreateElement(string elementName, string protocolName, string protocolVersion, int viewID,
-            string trendTemplate = "Default", string alarmTemplate = "")
-        {
-            var request = new AddElementMessage
-            {
-                ElementName = elementName,
-                ProtocolName = protocolName,
-                ProtocolVersion = protocolVersion,
-                TrendTemplate = trendTemplate,
-                AlarmTemplate = alarmTemplate,
-                ViewIDs = new int[] { viewID },
-            };
+			for (int i = viewNames.Length - 1; i >= 0; --i)
+			{
+				int? viewID = GetView(viewNames[i]);
+				if (viewID.HasValue)
+				{
+					lastExistingViewID = viewID;
+					lastExistingViewName = viewNames[i];
+					firstNonExistingViewLevel = i + 1;
+					break;
+				}
+			}
 
-            var dms = engine.GetDms();
-            if (dms.ElementExists(elementName)) //Delete element first if it already exists
-            {
-                var elementRequest = new GetElementByNameMessage(elementName);
-                var elementResponse = engine.SendSLNetSingleResponseMessage(elementRequest);
-                if (!(elementResponse is ElementInfoEventMessage elementInfo))
-                    throw new ArgumentException("Unexpected message returned by DataMiner");
+			if (firstNonExistingViewLevel.HasValue && firstNonExistingViewLevel == viewNames.Length)
+				return lastExistingViewID.Value;
 
-                // Remove the element if it exists
-                var deleteRequest = new SetElementStateMessage(elementInfo.DataMinerID, elementInfo.ElementID, Skyline.DataMiner.Net.Messages.ElementState.Deleted, true);
-                engine.SendSLNetMessage(deleteRequest);
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
-            }
+			if (!firstNonExistingViewLevel.HasValue)
+			{
+				// No views in the tree already exist, so create all views starting from the root view
+				lastExistingViewID = -1;
+				lastExistingViewName = engine.GetDms().GetView(-1).Name;
+				firstNonExistingViewLevel = 0;
+			}
 
-            //Verify deletion succeeded
-            for (int i = 0; i < 5; ++i)
-            {
-                if (dms.ElementExists(elementName))
-                {
-                    Thread.Sleep(5000);
-                }
-                else
-                {
-                    break;
-                }
-            }
+			for (int i = firstNonExistingViewLevel.Value; i < viewNames.Length; ++i)
+			{
+				lastExistingViewID = CreateNewView(viewNames[i], lastExistingViewName);
+				lastExistingViewName = viewNames[i];
+			}
 
-            //create element
-            engine.SendSLNetSingleResponseMessage(request);
-        }
-    }
+			return lastExistingViewID.Value;
+		}
+
+		private void CreateElement(string elementName, string protocolName, string protocolVersion, int viewID,
+			string trendTemplate = "Default", string alarmTemplate = "")
+		{
+			var request = new AddElementMessage
+			{
+				ElementName = elementName,
+				ProtocolName = protocolName,
+				ProtocolVersion = protocolVersion,
+				TrendTemplate = trendTemplate,
+				AlarmTemplate = alarmTemplate,
+				ViewIDs = new int[] { viewID },
+			};
+
+			var dms = engine.GetDms();
+			if (dms.ElementExists(elementName)) //Delete element first if it already exists
+			{
+				engine.GenerateInformation($"Atempting to delete {elementName}");
+				var elementRequest = new GetElementByNameMessage(elementName);
+				var elementResponse = engine.SendSLNetSingleResponseMessage(elementRequest);
+				if (!(elementResponse is ElementInfoEventMessage elementInfo))
+					throw new ArgumentException("Unexpected message returned by DataMiner");
+
+				// Remove the element if it exists
+				var deleteRequest = new SetElementStateMessage(elementInfo.DataMinerID, elementInfo.ElementID, Skyline.DataMiner.Net.Messages.ElementState.Deleted, true);
+				engine.SendSLNetMessage(deleteRequest);
+				System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
+			}
+
+			//Verify deletion succeeded
+			for (int i = 0; i < 5; ++i)
+			{
+				if (dms.ElementExists(elementName))
+				{
+					engine.GenerateInformation($"{elementName} still exists, waiting for deletion to complete...");
+					Thread.Sleep(5000);
+				}
+				else
+				{
+					engine.GenerateInformation($"{elementName} deleted successfully");
+					break;
+				}
+			}
+
+			//create element
+			engine.GenerateInformation($"Creating element {elementName} with protocol {protocolName} version {protocolVersion} in view ID {viewID}");
+			engine.SendSLNetSingleResponseMessage(request);
+		}
+	}
 }

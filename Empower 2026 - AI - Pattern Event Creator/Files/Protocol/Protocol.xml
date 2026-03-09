@@ -1,0 +1,222 @@
+﻿<!--
+
+	Revision History:
+
+	DATE		VERSION		AUTHOR				COMMENTS
+ 
+	11/05/205	1.0.0.1		DDR, Skyline		Initial Version
+
+
+ ****************************************************************************
+ Description:
+RESTART ELEMENT EACH TIME WHEN RERUNNING PROTOCOL. 
+
+  **********************************************************************************************
+  
+-->
+<Protocol xmlns="http://www.skyline.be/protocol">
+	<Name>Empower 2026 - AI - Pattern Event Creator</Name>
+	<Description>Simple driver to get hands on with pattern detections</Description>
+	<Version>0.0.0.1</Version>
+	<Provider>Skyline Communications</Provider>
+	<ElementType>virtual</ElementType>
+	<Type relativeTimers="true">virtual</Type>
+	<Display defaultPage="General" pageOrder="General" wideColumnPages="General"/>
+	<SNMP includepages="true">auto</SNMP>
+	<Params>
+		<Param id="1" historySet="true" trending="true">
+			<Name>Power Consumption</Name>
+			<Description>Power Consumption</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Decimals>1</Decimals>
+				<Units>W</Units>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>0</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+			<Alarm>
+				<Monitored>true</Monitored>
+			</Alarm>
+		</Param>
+		<Param id="102">
+			<Name>GeneratePattern</Name>
+			<Description>Generate pattern</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>General</Page>
+						<Column>0</Column>
+						<Row>1</Row>
+					</Position>
+				</Positions>
+			</Display>
+			<Measurement>
+				<Type width="110">button</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Generate Pattern</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
+		<Param id="2" historySet="true" trending="true">
+			<Name>RemainingTimeInPattern</Name>
+			<Description>The remaining number of timer ticks that the current pattern occurrence still needs to last</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<Type>double</Type>
+				<LengthType>next param</LengthType>
+			</Interprete>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
+		<Param id="3" trending="false" save="true">
+			<Name>DummyAddValue</Name>
+			<Description>Dummy For Adding Value</Description>
+			<Type>fixed</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+		</Param>
+		<Param id="4">
+			<Name>DummyForStartup</Name>
+			<Description>Dummy For Startup</Description>
+			<Type>fixed</Type>
+			<Interprete>
+				<RawType>other</RawType>
+				<LengthType>next param</LengthType>
+				<Type>string</Type>
+			</Interprete>
+		</Param>
+	</Params>
+	<Groups>
+		<Group id="1">
+			<Type>poll action</Type>
+			<Content>
+				<Action>2</Action>
+			</Content>
+		</Group>
+	</Groups>
+	<QActions>
+		<QAction id="1" encoding="csharp" triggers="3">
+			<![CDATA[
+using System;
+using System.IO;
+using System.Text;
+using Skyline.DataMiner.Scripting;
+using System.Linq;
+using System.Globalization;
+using System.Threading;
+
+public class QAction
+{
+    static Random r = new Random();
+
+    public static void Run(SLProtocol protocol) //Adds a new datapoint every time the timer rings
+	{
+        int InPattern = int.Parse(protocol.GetParameter(102).ToString(), CultureInfo.InvariantCulture);
+        if (InPattern != 0)
+        {
+            protocol.SetParameter(102, 0);
+            protocol.SetParameter(2, 10);
+        }
+        int remainingTimeInPattern= int.Parse(protocol.GetParameter(2).ToString(), CultureInfo.InvariantCulture);
+        if (remainingTimeInPattern == 0)
+        {
+            double u1 = 1.0 - r.NextDouble(); //uniform(0,1] random doubles
+            double u2 = 1.0 - r.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
+                         Math.Sin(2.0 * Math.PI * u2); //random normal(0,1)
+            double randNormal =
+                         635 + 2 * randStdNormal;
+            protocol.SetParameter(1, randNormal);
+        }
+        else
+        {
+            protocol.SetParameter(2, --remainingTimeInPattern);
+            protocol.SetParameter(1, 700);
+        }
+	}
+
+}
+
+]]>
+		</QAction>
+		<QAction id="2" encoding="csharp" historySet="true" triggers="4">
+			<![CDATA[
+using System;
+using System.IO;
+using System.Text;
+using Skyline.DataMiner.Scripting;
+using System.Linq;
+using System.Globalization;
+using System.Threading;
+
+public class QAction
+{
+    public static void Run(SLProtocol protocol) //runs on startup
+    {
+        protocol.Log("QAction 2 is running");
+        protocol.SetParameter(1,635);
+        Thread.Sleep(2000);
+        protocol.SetParameter(102, 1);
+    }
+}]]>
+		</QAction>
+	</QActions>
+	<Actions>
+		<Action id="1">
+			<On id="4">parameter</On>
+			<Type>run actions</Type>
+		</Action>
+		<Action id="2">
+			<On id="3">parameter</On>
+			<Type>run actions</Type>
+		</Action>
+	</Actions>
+	<Timers>
+		<Timer id="1">
+			<Name>Timer1</Name>
+			<Time initial="random=5:10">2000</Time>
+			<Content>
+				<Group>1</Group>
+			</Content>
+		</Timer>
+	</Timers>
+	<Triggers>
+		<Trigger id="1">
+			<On>protocol</On>
+			<Time>after startup</Time>
+			<Type>action</Type>
+			<Content>
+				<Id>1</Id>
+			</Content>
+		</Trigger>
+	</Triggers>
+</Protocol>

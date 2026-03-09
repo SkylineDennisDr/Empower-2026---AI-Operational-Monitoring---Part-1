@@ -26,9 +26,13 @@
 			this.installer = new AppInstaller(connection, this.context);
 		}
 
-		public void InstallDefaultContent()
+		public void InstallDefaultContent(IEngine engine)
 		{
 			installer.InstallProtocols();
+			foreach (var protocol in installer.ContentParser.GetProtocolsToInstall())
+			{
+				engine.GenerateInformation($"Installed protocol: {protocol.ProtocolName}");
+			}
 			this.context.AppContentPath = originalContentPath;
 		}
 	}

@@ -2,8 +2,8 @@
 	<Name>TrendTemplate_PA_Demo</Name>
 	<Description></Description>
 	<Protocol>
-		<Name>AI - Commtia DAB</Name>
-		<Version>1.0.0.1-fast</Version>
+		<Name>Empower 2026 - AI - Commtia DAB</Name>
+		<Version>1.0.0.1</Version>
 	</Protocol>
 	<Id id="120" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>
 	<Id id="121" rttrending="false" avgtrending="false" filter="" centraldbdisablert="false" centraldbdisableavg="false"/>

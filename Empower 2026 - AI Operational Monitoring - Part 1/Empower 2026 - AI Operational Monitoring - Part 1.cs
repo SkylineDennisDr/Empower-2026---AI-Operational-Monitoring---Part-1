@@ -20,18 +20,20 @@ internal class Script
     {
         try
         {
-            engine.GenerateInformation("Starting installation");
+			engine.Timeout = new TimeSpan(0, 5, 0);
+			engine.GenerateInformation("Starting installation");
             var installer = new AppInstaller(Engine.SLNetRaw, context);
             installer.InstallDefaultContent();
 
             string setupContentPath = installer.GetSetupContentDirectory();
 
             var protocolInstaller = new ProtocolInstaller(Engine.SLNetRaw, context, setupContentPath, engine.GenerateInformation);
-            protocolInstaller.InstallDefaultContent();
+            protocolInstaller.InstallDefaultContent(engine);
 
             var elementInstaller = new ElementInstaller(engine);
             elementInstaller.InstallDefaultContent();
-        }
+			engine.GenerateInformation("Installation completed successfully");
+		}
         catch (Exception e)
         {
             engine.ExitFail($"Exception encountered during installation: {e}");

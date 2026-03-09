@@ -1,0 +1,2 @@
+Protocol Name: Empower 2026 - AI - Pattern Event Creator
+Protocol Version: 0.0.0.1

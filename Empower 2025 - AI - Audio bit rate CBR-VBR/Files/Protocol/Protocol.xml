@@ -146,7 +146,19 @@ DATE		VERSION		AUTHOR				COMMENTS
 				<RTDisplay>false</RTDisplay>
 			</Display>
 		</Param>
-
+		<Param id="14" trending="false" save="true">
+			<Name>numberOfHistoryPointsToReadAtStartup</Name>
+			<Description>Number of history points to read at startup</Description>
+			<Type>read</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<Measurement>
+				<Type>number</Type>
+			</Measurement>
+		</Param>
 		<Param id="102">
 			<Name>GenerateDataFirst</Name>
 			<Description>Generate Channel 1</Description>
@@ -383,6 +395,35 @@ DATE		VERSION		AUTHOR				COMMENTS
 				<RTDisplay>false</RTDisplay>
 			</Display>
 		</Param>
+		<Param id="506">
+			<Name>ProtocolActions</Name>
+			<Description>Press this to push in historical trend data</Description>
+			<Type>write</Type>
+			<Interprete>
+				<RawType>numeric text</RawType>
+				<LengthType>next param</LengthType>
+				<Type>double</Type>
+			</Interprete>
+			<!--<Display>
+				<RTDisplay>true</RTDisplay>
+				<Positions>
+					<Position>
+						<Page>Data</Page>
+						<Row>1</Row>
+						<Column>0</Column>
+					</Position>
+				</Positions>
+			</Display>-->
+			<Measurement>
+				<Type width="100">button</Type>
+				<Discreets>
+					<Discreet>
+						<Display>Generate data</Display>
+						<Value>1</Value>
+					</Discreet>
+				</Discreets>
+			</Measurement>
+		</Param>
 	</Params>
 	<QActions>
 		<QAction id="1" name="Data" encoding="csharp" options="precompile">
@@ -516,7 +557,6 @@ namespace Skyline.Protocol.Model
     public class Data
     {
         private static GeneratedDataCollection dataCollection = null;
-        public static bool FastVersion = false;
 
         public static GeneratedDataCollection GetData()
         {
@@ -609,6 +649,12 @@ public class QAction
         if (!Data.WaitUntilNotBusy(protocol))
             return;
 
+        if (protocol.IsEmpty(14)) //Don't generate history if the number of values to generate at startup is not set
+            return;
+
+        int maxValuesPerTime = Math.Max(int.Parse(protocol.GetParameter(14).ToString(), CultureInfo.InvariantCulture), 4); //at least 4 so enough history is read in for empower
+
+
         protocol.Log(8, 5, "Generating history data");
         protocol.Datagenerated = "Generating history...";
         protocol.Busy = "Yes";
@@ -645,7 +691,6 @@ public class QAction
         }
 
         var endTime = DateTime.Now - data.AnomalousDataDuration();
-        int maxValuesPerTime = Data.FastVersion ? 5000 : 10;
 
         int valuesPushed = 0;
         for (int j = lastRow + 1; j < lastRow + maxValuesPerTime + 1; j++)
@@ -758,6 +803,11 @@ public class QAction
 			<On id="60001">parameter</On>
 			<Type>run actions</Type>
 		</Action>
+		<Action id="2">
+			<Name>Data</Name>
+			<On id="1">group</On>
+			<Type>execute next</Type>
+		</Action>
 	</Actions>
 	<Timers>
 		<Timer id="1">
@@ -769,4 +819,15 @@ public class QAction
 			</Content>
 		</Timer>
 	</Timers>
+	<Triggers>
+		<Trigger id="1">
+			<Name>Data</Name>
+			<On id="506">parameter</On>
+			<Time>change</Time>
+			<Type>action</Type>
+			<Content>
+				<Id>2</Id>
+			</Content>
+		</Trigger>
+	</Triggers>
 </Protocol>
