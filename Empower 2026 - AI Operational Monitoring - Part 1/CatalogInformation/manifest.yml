@@ -33,7 +33,7 @@ id: 55622a9f-3d76-46e0-8637-78b2fc8a0d8a
 #   Max length: 100 characters.
 #   Cannot contain newlines.
 #   Cannot contain leading or trailing whitespace characters.
-title: Empower 2026 - AI Operational Monitoring - Part 1
+title: Empower 2026 - AI Operational Monitoring
 
 # [Optional]
 # General information about the Catalog item.
@@ -72,13 +72,10 @@ owners:
 #   Cannot contain leading or trailing whitespace characters.
 tags:
   - Empower
-  - AI
+  - Behavioral Anomaly Detection
   - Relational Anomaly Detection
   - Document Intelligence
   - Pattern Matching
-  - Behavioral Anomaly Detection
-  - Time Scoped Relation Learning
-  - BAD Feedback
 
 # [Optional]
 # The ID of the vendor.
