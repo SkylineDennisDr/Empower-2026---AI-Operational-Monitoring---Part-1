@@ -28,14 +28,14 @@
 		{
 			#region element creation
 			int viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Behavioral Anomaly Detection Demo" });
-			CreateElement("Empower 2026 - AI - Audio bit rate", "Empower 2026 - AI - Audio bit rate CBR-VBR", "0.0.0.1", viewID);
+			CreateElement("Empower 2026 - AI - Audio bit rate", "Empower 2026 - AI - Audio bit rate CBR-VBR", "0.0.0.1", viewID, "Default", "Default");
 			CreateElement("Empower 2026 - AI - Task Manager", "Empower 2026 - AI - TSR", "1.0.0.4", viewID);
 
 			viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Pattern Matching Demo" });
 			CreateElement("Empower 2026 - AI - Video server 1", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
 			CreateElement("Empower 2026 - AI - Video server 2", "Empower 2026 - AI - Video Server", "0.0.0.1", viewID);
-			CreateElement("Empower 2026 - AI - PM in tables", "Empower 2026 - AI - PM in Tables", "1.0.0.3", viewID);
-			CreateElement("Empower 2026 - AI - Pattern Event Creator", "Empower 2026 - AI - Pattern Event Creator", "0.0.0.1", viewID);
+			//CreateElement("Empower 2026 - AI - PM in tables", "Empower 2026 - AI - PM in Tables", "1.0.0.3", viewID);
+			//CreateElement("Empower 2026 - AI - Pattern Event Creator", "Empower 2026 - AI - Pattern Event Creator", "0.0.0.1", viewID);
 
 			viewID = CreateViews(new string[] { "DataMiner Catalog", "Empower 2026", "AI Operational Monitoring", "Relational Anomaly Detection Demo" });
 			string lastElementName = "Empower 2026 - AI - DAB Transmitter";
@@ -65,23 +65,23 @@
 			engine.GenerateInformation("Fetching elements");
 			var videoServer1 = engine.FindElement("Empower 2026 - AI - Video server 1");
 			var videoServer2 = engine.FindElement("Empower 2026 - AI - Video server 2");
-			var pmInTables = engine.FindElement("Empower 2026 - AI - PM in tables");
+			//var pmInTables = engine.FindElement("Empower 2026 - AI - PM in tables");
 			var audioBitRateElement = engine.FindElement("Empower 2026 - AI - Audio bit rate");
 			var TSRElement= engine.FindElement("Empower 2026 - AI - Task Manager");
 
-			if (videoServer1 != null && videoServer2 != null && pmInTables != null && audioBitRateElement != null && TSRElement != null)
+			if (videoServer1 != null && videoServer2 != null && audioBitRateElement != null && TSRElement != null)
 			{
 				engine.GenerateInformation("Specifying number of history points to read");
 				videoServer1.SetParameter(10, 1); //fast version: read in all history, for empower put to 1 else to 10000
 				videoServer2.SetParameter(10, 1); //fast version: read in all history, for empower put to 1 else to 10000
-				pmInTables.SetParameter(10, 1); //fast version: read in all history, for empower put to 1 else to 10000
-				audioBitRateElement.SetParameter(14, 5); //For empower, set to 4: every 5', 4 points will be read. This leads to 1364 points to be read, which is good. Else set to 10000
-				TSRElement.SetParameter(10, 40); //!!!!!!!!!!!!!!!!!!!!FOR EMPOWER, SET THIS TO 40!!!!!!!!!!!!!!!!!!! Else set to 10000
+				//pmInTables.SetParameter(10, 1); //fast version: read in all history, for empower put to 1 else to 10000
+				audioBitRateElement.SetParameter(14, 5); //For empower, set to 5: every 5', 5 points will be read. This leads to 1364 points to be read, which is good. Else set to 10000
+				TSRElement.SetParameter(10, 546); //!!!!!!!!!!!!!!!!!!!!FOR EMPOWER, SET THIS TO 40!!!!!!!!!!!!!!!!!!! Else set to 10000
 				Thread.Sleep(5000);
 				engine.GenerateInformation("Enabling history data read-in");
 				videoServer1.SetParameter(102, 1);
 				videoServer2.SetParameter(102, 1);
-				pmInTables.SetParameter(506, 1);
+				//pmInTables.SetParameter(506, 1);
 				audioBitRateElement.SetParameter(506, 1);
 				TSRElement.SetParameter(506, 1);
 			}
@@ -201,12 +201,12 @@
 			}
 
 			//Verify deletion succeeded
-			for (int i = 0; i < 5; ++i)
+			for (int i = 0; i < 10; ++i)
 			{
 				if (dms.ElementExists(elementName))
 				{
 					engine.GenerateInformation($"{elementName} still exists, waiting for deletion to complete...");
-					Thread.Sleep(5000);
+					Thread.Sleep(10000);
 				}
 				else
 				{
