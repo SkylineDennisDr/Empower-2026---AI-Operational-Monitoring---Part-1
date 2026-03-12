@@ -8,17 +8,13 @@ During this session, we will get handson with *Pattern Matching*, *Behavioral An
 The package deploys five elements under the view *DataMiner Catalog* > *Empower 2026* > *AI Operational Monitoring*.
 You can use the elements to follow along with the exercises during the session and to explore the capabilities of various AI features in DataMiner.
 
-<p align="center">
-  <img src="./Images/elements.png" alt="Elements in DataMiner Cube">
-</p>
+![Elements in DataMiner Cube](./Images/elements.png)
 
 The package will also deploy a few low code apps on your system:
 - The Document Intelligence app, which will be needed to follow along with the exercises on document intelligence.
 - The RAD Manager app, which will be needed to follow along with the exercises on relational anomaly detection.
 
-<p align="center">
-  <img src="./Images/appMain.png" alt="Low code apps in the package">
-</p>
+![Low code apps in the package](./Images/appMain.png)
 
 The elements deployed by this package will read in history data slowly and should therefore be deployed during the very first
 session entitled **Getting started with DataMiner in seconds**. This session takes place
