@@ -537,9 +537,9 @@ namespace Skyline.Protocol.Model
                     newData.Add(GenerateGaussian(rand, 96.01, 0.005));
                 for (int i = 0; i < AnomalousDataPoints; ++i)
                 {
-                    double value = GenerateGaussian(rand, 95.96, 0.02);
-                    if (i < 8)
-                        value += 0.04 - i * 0.005;
+                    double value = GenerateGaussian(rand, 95.94, 0.02);
+                    //if (i < 8)
+                        //value += 0.04 - i * 0.005;
                     anomalousData.Add(value);
                 }
 
