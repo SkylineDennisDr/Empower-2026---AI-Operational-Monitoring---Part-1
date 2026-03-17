@@ -51,25 +51,25 @@
 
 			engine.GenerateInformation("Fetching elements");
 			var videoServer1 = engine.FindElement("Empower 2026 - AI - Video server 1");
-			var videoServer2 = engine.FindElement("Empower 2026 - AI - Video server 2");
+		//	var videoServer2 = engine.FindElement("Empower 2026 - AI - Video server 2");
 			var audioBitRateElement = engine.FindElement("Empower 2026 - AI - Audio bit rate");
-			var TSRElement= engine.FindElement("Empower 2026 - AI - Task Manager");
+			//var TSRElement= engine.FindElement("Empower 2026 - AI - Task Manager");
 			var TSRFastElement= engine.FindElement("Empower 2026 - AI - TSRFast");
 
-			if (videoServer1 != null && videoServer2 != null && audioBitRateElement != null && TSRElement != null && TSRFastElement != null)
+			if (videoServer1 != null && audioBitRateElement != null && TSRFastElement != null)
 			{
 				engine.GenerateInformation("Specifying number of history points to read");
 				videoServer1.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1 else to 10000
-				videoServer2.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1 else to 10000
+				//videoServer2.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1 else to 10000
 				audioBitRateElement.SetParameter(14, 10000); //For empower, set to 5: every 5', 5 points will be read. This leads to 1364 points to be read, which is good. Else set to 10000
-				TSRElement.SetParameter(10, 10000); //!!!!!!!!!!!!!!!!!!!!FOR EMPOWER, SET THIS TO 40!!!!!!!!!!!!!!!!!!! Else set to 10000
+				//TSRElement.SetParameter(10, 10000); //!!!!!!!!!!!!!!!!!!!!FOR EMPOWER, SET THIS TO 40!!!!!!!!!!!!!!!!!!! Else set to 10000
 				TSRFastElement.SetParameter(10, 10000); 
 				Thread.Sleep(5000);
 				engine.GenerateInformation("Enabling history data read-in");
 				videoServer1.SetParameter(102, 1);
-				videoServer2.SetParameter(102, 1);
+			//	videoServer2.SetParameter(102, 1);
 				audioBitRateElement.SetParameter(506, 1);
-				TSRElement.SetParameter(506, 1);
+			//	TSRElement.SetParameter(506, 1);
 			}
 			engine.GenerateInformation("Finished installing elements");
 			#endregion
