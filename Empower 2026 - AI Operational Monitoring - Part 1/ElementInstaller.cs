@@ -59,10 +59,10 @@
 			if (videoServer1 != null && videoServer2 != null && audioBitRateElement != null && TSRElement != null && TSRFastElement != null)
 			{
 				engine.GenerateInformation("Specifying number of history points to read");
-				videoServer1.SetParameter(10, 1); //fast version: read in all history, for empower put to 1 else to 10000
-				videoServer2.SetParameter(10, 1); //fast version: read in all history, for empower put to 1 else to 10000
-				audioBitRateElement.SetParameter(14, 5); //For empower, set to 5: every 5', 5 points will be read. This leads to 1364 points to be read, which is good. Else set to 10000
-				TSRElement.SetParameter(10, 40); //!!!!!!!!!!!!!!!!!!!!FOR EMPOWER, SET THIS TO 40!!!!!!!!!!!!!!!!!!! Else set to 10000
+				videoServer1.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1 else to 10000
+				videoServer2.SetParameter(10, 10000); //fast version: read in all history, for empower put to 1 else to 10000
+				audioBitRateElement.SetParameter(14, 10000); //For empower, set to 5: every 5', 5 points will be read. This leads to 1364 points to be read, which is good. Else set to 10000
+				TSRElement.SetParameter(10, 10000); //!!!!!!!!!!!!!!!!!!!!FOR EMPOWER, SET THIS TO 40!!!!!!!!!!!!!!!!!!! Else set to 10000
 				TSRFastElement.SetParameter(10, 10000); 
 				Thread.Sleep(5000);
 				engine.GenerateInformation("Enabling history data read-in");
